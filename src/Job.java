@@ -1,6 +1,10 @@
+
+package com.complex.entity;
+
 public class Job {
-    private double arrivalTime;
     private double startTime;
+    private String startDate;
+    private String finishDate;
     private double finishTime;
     private long jobId;
     private double jobSize;
@@ -9,7 +13,8 @@ public class Job {
     public void print(){
         System.out.println("jobId:"+jobId);
         System.out.println("jobSize:"+jobSize);
-        System.out.println("arrivalTime:"+arrivalTime);
+        System.out.println("startDate:"+startDate);
+        System.out.println("finishDate:"+finishDate);
         System.out.println("startTime:"+startTime);
         System.out.println("finishTime:"+finishTime);
     }
@@ -26,8 +31,12 @@ public class Job {
         this.jobId = assignId();
     }
 
-    public final void markArrival(final double time) {
-        this.arrivalTime = time;
+    public void setFinishDate(String finishDate){
+        this.finishDate=finishDate;
+    }
+
+    public void setStartDate(String startDate){
+        this.startDate=startDate;
     }
 
     public final void markStart(final double time) {
@@ -38,13 +47,11 @@ public class Job {
         this.finishTime = time;
     }
 
-    public final double getFinishTime() {
-        return this.finishTime;
-    }
-
-    public final double getSize() {
+    public final double getJobSize(){
         return this.jobSize;
     }
 
-    public final double getJobId() {return this.jobId;}
+    public final long getJobId(){
+        return this.jobId;
+    }
 }
