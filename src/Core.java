@@ -1,5 +1,10 @@
+package com.complex.entity;
+
+import java.sql.Timestamp;
+import java.util.Date;
+
 public class Core {
-    private Job job;
+    public Job job;
     private enum PowerState {
         /** The core is actively processing. */
         ACTIVE,
@@ -23,6 +28,7 @@ public class Core {
     private double speed;
     private Experiment experiment;
     private Socket socket;
+    private int coreId;
 
     private double dynamicPower;
     private double parkPower;
@@ -32,9 +38,7 @@ public class Core {
         this.job = null;
         this.powerState = PowerState.HALT;
         this.powerPolicy = CorePowerPolicy.NO_MANAGEMENT;
-
-        this.speed = 1.0;
-
+        this.speed = 2.0;
         dynamicPower = 40.0 * (4.0 / 5.0) / 2;
         parkPower = 0;
         idlePower = dynamicPower / 5.0;
@@ -48,34 +52,34 @@ public class Core {
         }
     }
 
-    public void assignJob(final double time,Job onejob){
+    public void assignJob(final double time, Job onejob){
         if (this.job != null) {
             System.out.println("Already has a job!");
         }else{
             this.job=onejob;
             double startTime=time;
+            Timestamp t = new Timestamp(new Date().getTime());
             job.markStart(startTime);
+            job.setStartDate(t.toString());
         }
     }
 
-    public void removeJob(final double time, final Job oneJob){
-        if (this.job != null) {
-            System.out.println("Error!No job in this core!");
-        }else{
-            double finishTime=time+this.job.getSize()/this.speed;
-            job.markFinish(finishTime);
-            this.job=null;
-        }
-    }
-
-    public void process(double time){
+    public void process(double time) throws InterruptedException {
         if (this.job != null){
-            int currentProcess=0;
-            while(currentProcess<job.getSize()){
-                currentProcess+=this.speed;
+            int currentProgress=0;
+            if(this.speed==0){
+                job=null;
+                System.out.println("speed is 0! cannot handle any job!");
+                return;
             }
-            if(currentProcess==job.getSize()){
-                this.job.markFinish(time+currentProcess*this.speed);
+            while(currentProgress<job.getJobSize()){
+                currentProgress+=this.speed;
+                Thread.sleep(1000);
+            }
+            if(currentProgress>=job.getJobSize()){
+                this.job.markFinish(time+currentProgress/this.speed);
+                Timestamp t = new Timestamp(new Date().getTime());
+                job.setFinishDate(t.toString());
                 this.job.print();
                 System.out.println("Job "+this.job.getJobId()+" is finished.");
                 this.job=null;
@@ -83,15 +87,43 @@ public class Core {
         }
     }
 
+    public void removeJob(final double time, final Job oneJob){
+        if (this.job != null) {
+            System.out.println("Error!No job in this core!");
+        }else{
+            double finishTime=time+this.job.getJobSize()/this.speed;
+            job.markFinish(finishTime);
+            this.job=null;
+        }
+    }
+
     public Job getJob(){
         return this.job;
     }
 
+//    public AJAXReturn STARTWORK(Core core,int num){
+//        Job job=new Job(num);
+//        long time= new Date().getTime();
+//        AJAXReturn ajaxReturn = new AJAXReturn();
+//        core.assignJob(time,job);
+//        core.process(time);
+//        ajaxReturn.setErrcode(0);
+//        ajaxReturn.setErrmsg("execution successful");
+//        ajaxReturn.setData(JsonUtils.objectToJson(job));
+//        if(job.getFinishDate().equals(null)||job.getFinishDate().equals("")){
+//            ajaxReturn.setErrmsg("something cash!");
+//            ajaxReturn.setErrcode(2);
+//        }
+//        return ajaxReturn;
+//    }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Core core= new Core();
+//        core.STARTWORK(core,5);
         Job job=new Job(5);
-        long time=System.currentTimeMillis()/1000;
+//        TimeParse timeParse = new TimeParse();
+        Timestamp t = new Timestamp(new Date().getTime());
+        long time= new Date().getTime();
         core.assignJob(time,job);
         core.process(time);
     }
