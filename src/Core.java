@@ -6,7 +6,6 @@ import java.util.Date;
 public class Core {
     public Job job;
    
-
     private double speed;
     private Socket socket;
     private int coreId;
