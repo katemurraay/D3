@@ -5,22 +5,6 @@ import java.util.Iterator;
 
 public class Socket {
     private Server server;
-    private Experiment experiment;
-
-    private enum SocketPowerState {
-        ACTIVE,
-        TRANSITIONG_TO_LOW_POWER_IDLE,
-        TRANSITIONG_TO_ACTIVE,
-        LOW_POWER_IDLE
-    };
-
-    public static enum SocketPowerPolicy {
-        NO_MANAGEMENT,
-        SOCKET_PARKING
-    };
-
-    private SocketPowerPolicy powerPolicy;
-    private SocketPowerState powerState;
 
     private Vector<Core> availableCores;
     private Vector<Core> busyCores;
@@ -47,8 +31,6 @@ public class Socket {
             this.availableCores.add(core);
         }
 
-        this.powerPolicy = SocketPowerPolicy.NO_MANAGEMENT;
-        this.powerState = SocketPowerState.ACTIVE;
     }
 
     public Vector<Core> getAvailableCores(){
