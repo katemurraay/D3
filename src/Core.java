@@ -16,8 +16,6 @@ public class Core {
 
     public Core() {
         this.job = null;
-        this.powerState = PowerState.HALT;
-        this.powerPolicy = CorePowerPolicy.NO_MANAGEMENT;
         this.speed = 2.0;
         dynamicPower = 40.0 * (4.0 / 5.0) / 2;
         parkPower = 0;
