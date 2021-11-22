@@ -4,7 +4,6 @@ import java.util.Vector;
 import java.util.Iterator;
 
 public class Socket {
-    private Server server;
 
     private Vector<Core> availableCores;
     private Vector<Core> busyCores;
