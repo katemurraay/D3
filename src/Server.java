@@ -1,3 +1,5 @@
+package com.complex.entity;
+
 import java.util.*;
 
 public class Server {
@@ -15,7 +17,7 @@ public class Server {
         }
 
         for(Job job:jobQueue){
-            job.print();
+            job.startPrint();
         }
 
         System.out.println("totalJobs"+totalJobs);
@@ -35,14 +37,14 @@ public class Server {
         this.jobQueue=new LinkedList<Job>();
         this.sockets=new Socket[numberOfSockets];
         for (int i = 0; i < numberOfSockets; i++) {
-            this.sockets[i] = new Socket(this, numberOfCoresPerSocket);
+            this.sockets[i] = new Socket(numberOfCoresPerSocket);
         }
         this.totalJobs=0;
         this.jobToSocketMap=new HashMap<Job, Socket>();
     }
 
-    public void insertJob(final double time, final Job job) {
-        if (this.getRemainingCapacity() == 0) {
+    public void insertJob(final double time, final Job job) throws InterruptedException {
+        if (this.getRemainingCapacity() > 0) {
             this.jobQueue.add(job);
         }else{
             this.process(time, job);
@@ -50,7 +52,7 @@ public class Server {
         this.totalJobs++;
     }
 
-    public void process(final double time, final Job job) {
+    public void process(final double time, final Job job) throws InterruptedException {
         Socket targetSocket = null;
         Socket mostUtilizedSocket = null;
         double highestUtilization = Double.MIN_VALUE;
@@ -78,7 +80,6 @@ public class Server {
         this.jobToSocketMap.put(job, targetSocket);
         if(targetSocket.getRemainingCapacity()>0){
             targetSocket.process(System.currentTimeMillis()/1000);
-
         }
 
     }
@@ -116,7 +117,9 @@ public class Server {
         return nInService;
     }
 
-    public static void main(String[] args) {
+
+
+    public static void main(String[] args) throws InterruptedException {
         Job job=new Job(4);
         Job job2=new Job(2);
         Server server=new Server(2,3);
