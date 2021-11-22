@@ -3,7 +3,7 @@ public class Generator {
     /**
      * Creates a new Generator.
      *
-     * @param aGenerator - the random number generator to feed this generator.
+     * @param aGenerator - the random number generator 
      */
 
 
