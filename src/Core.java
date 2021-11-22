@@ -5,28 +5,9 @@ import java.util.Date;
 
 public class Core {
     public Job job;
-    private enum PowerState {
-        /** The core is actively processing. */
-        ACTIVE,
-        /** Transitioning to park. */
-        TRANSITIONINGG_TO_LOW_POWER_IDLE,
-        /** Transitioning to active from park. */
-        TRANSITIONINGG_TO_ACTIVE,
-        /** The core is in the "halt" mode (idle). */
-        HALT,
-        /** The core is in park mode.*/
-        LOW_POWER_IDLE
-    };
+   
 
-    public static enum CorePowerPolicy {
-        NO_MANAGEMENT,
-        CORE_PARKING
-    };
-
-    private PowerState powerState;
-    private CorePowerPolicy powerPolicy;
     private double speed;
-    private Experiment experiment;
     private Socket socket;
     private int coreId;
 
