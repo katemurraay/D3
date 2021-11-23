@@ -54,4 +54,16 @@ public class Job {
     public final long getJobId(){
         return this.jobId;
     }
+
+    public void setJobSize(int i) {
+        this.jobSize = i;
+    }
+
+    public double getMarkFinish() {
+        return this.finishTime;
+    }
+
+    public long getMarkStart() {
+        return (long)this.startTime;
+    }
 }

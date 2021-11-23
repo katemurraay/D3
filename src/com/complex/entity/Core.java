@@ -33,12 +33,14 @@ public class Core {
     public void assignJob(final double time, Job onejob){
         if (this.job != null) {
             System.out.println("Already has a job!");
-        }else{
+        }else if(onejob != null){
             this.job=onejob;
             double startTime=time;
             Timestamp t = new Timestamp(new Date().getTime());
             job.markStart(startTime);
             job.setStartDate(t.toString());
+        } else{
+            System.out.println("Error!No job in this core!");
         }
     }
 
@@ -62,16 +64,21 @@ public class Core {
                 System.out.println("Job "+this.job.getJobId()+" is finished.");
                 this.job=null;
             }
+        } else{
+            System.out.println("Error!No job in this core!");
         }
     }
 
     public void removeJob(final double time, final Job oneJob){
         if (this.job != null) {
             System.out.println("Error!No job in this core!");
-        }else{
-            double finishTime=time+this.job.getJobSize()/this.speed;
-            job.markFinish(finishTime);
+        }else if(oneJob !=null){
+            double finishTime=time+oneJob.getJobSize()/this.speed;
+            oneJob.markFinish(finishTime);
+            this.job = oneJob;
             this.job=null;
+        } else{
+            System.out.println("Error!No job in this core!");
         }
     }
 
