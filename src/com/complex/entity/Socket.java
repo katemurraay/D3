@@ -1,4 +1,5 @@
-import java.util.HashMap;
+package com.complex.entity;
+
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Vector;
 import java.util.Iterator;
@@ -8,6 +9,7 @@ public class Socket {
     private Vector<Core> availableCores;
     private Vector<Core> busyCores;
     private int cores;
+    private Server server;
     private ConcurrentHashMap<Job,Core>jobToCore;
 
     public void print(){
@@ -74,8 +76,7 @@ public class Socket {
         }
     }
 
-    public void process(double time)
-    {
+    public void process(double time) throws InterruptedException {
         if(jobToCore.size()==0){
             System.out.println("No job, free time!");
         }else{
@@ -94,7 +95,7 @@ public class Socket {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Server server=new Server(2,2);
         Socket socket=new Socket(server,3);
         Job job=new Job(4);

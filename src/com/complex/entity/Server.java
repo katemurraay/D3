@@ -9,7 +9,7 @@ public class Server {
     protected int totalJobs;
     protected int jobsInServer;
 
-    protected Experiment experiment;
+    //protected Experiment experiment;
 
     public void print(){
         for(Socket socket:sockets){
@@ -17,7 +17,7 @@ public class Server {
         }
 
         for(Job job:jobQueue){
-            job.startPrint();
+            job.print();
         }
 
         System.out.println("totalJobs"+totalJobs);
@@ -37,7 +37,7 @@ public class Server {
         this.jobQueue=new LinkedList<Job>();
         this.sockets=new Socket[numberOfSockets];
         for (int i = 0; i < numberOfSockets; i++) {
-            this.sockets[i] = new Socket(numberOfCoresPerSocket);
+            //this.sockets[i] = new Socket(numberOfCoresPerSocket);
         }
         this.totalJobs=0;
         this.jobToSocketMap=new HashMap<Job, Socket>();
